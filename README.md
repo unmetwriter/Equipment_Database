@@ -1,2 +1,2 @@
 # Equipment_Database
-A database made to book and lend out equuipment to students in the Ericsson Space
+A database made to book and lend out equipment to students in the Ericsson Space
