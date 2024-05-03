@@ -5,6 +5,7 @@ from mysql.connector import errorcode
 
 # Dictionary of all specified tables
 TABLES = {}
+ALTER_DICT= {}
 config_dict = {
     'user':'root',
     'password':'1234',
@@ -59,9 +60,14 @@ TABLES['bookings']= ("CREATE TABLE IF NOT EXISTS bookings("
 "FOREIGN KEY (SocialSecurityNumber) REFERENCES students(SocialSecurityNumber),"
 "FOREIGN KEY (EquipmentId) REFERENCES equipment(EquipmentId)"
 ")")
-
-
-
+ALTER_DICT['types']=(
+    "ALTER TABLE types RENAME COLUMN Name to Category")
+ALTER_DICT['equipment']=(
+    "ALTER TABLE equipment RENAME COLUMN Name to Item,RENAME COLUMN TotalNumberItems to TotalQuantity"
+    )
+ALTER_DICT['bookings']= (
+    "ALTER TABLE bookings ADD ReturnDate varchar(10),RENAME COLUMN NumberOfItems to Quantity"
+    )
 def set_up_log():
     """Returns a logger which logs messages in the terminal and in a file. Logger is used in the connect() method to log all connection attempts.
     See link for more details: https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html"""
@@ -122,11 +128,22 @@ def create_tables(cursor):
                 print(err.msg)
         else:
             print("OK")
-    cursor.close()
-
+def alter_tables(cursor):
+    for table_name in ALTER_DICT:
+        table_change = ALTER_DICT[table_name]
+        try:
+            print("Altering column {}:".format(table_name),end='')
+            cursor.execute(table_change)
+        except mysql.connector.Error as err:
+                print(err.msg)
+        else:
+            print("Ok")
+    
 if __name__ == "__main__": 
     database=connect(config_dict,10,1)
     if (database !=0):
         cursor = database.cursor()
     create_tables(cursor)
+    alter_tables(cursor)
+    cursor.close()
     database.close()

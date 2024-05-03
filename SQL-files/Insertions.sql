@@ -18,7 +18,7 @@ VALUES
 	("Game","Games which can be borrowed from the lab"),
 	("Microcontroller","A small computer, on a single circuit.");
 SELECT * FROM types;
-INSERT INTO equipment(Name,TypeId,Description,TotalNumberItems)
+INSERT INTO equipment(Item,TypeId,Description,TotalQuantity)
 VALUES
 ("Valve Index",1,"The Valve Index is a consumer virtual reality headset created and manufactured by Valve.",1),
 ("Occulus Quest",1,"A consumer virtual reality headset developed by Meta.",1),
@@ -26,9 +26,16 @@ VALUES
 ("Chessex Dice set",2,"A dice set consisting of d20s,d12s,d8s and so on",2),
 ("Rasberry PI 4 4gb",3,"A small general purpose computer used to develop all kinds of things",18);
 
-INSERT INTO bookings(SocialSecurityNumber,EquipmentId,NumberOfItems,StartDate,EndDate)
-VALUES 
-("01-01-02-0000",1,1,"2023-05-01","2023-05-08"),
-("01-01-02-0000",1,1,"2024-01-01","2023-01-20"),
-("02-01-02-0000",1,1,"2023-05-01","2023-05-08"),
-("02-01-02-0000",1,1,"2023-05-01","2023-05-08"),
+INSERT INTO bookings (SocialSecurityNumber,EquipmentId,Quantity,StartDate,EndDate,ReturnDate)
+VALUES
+("01-01-02-0000",1,1,"2023-05-01","2023-05-08","2023-05-08"),
+("02-01-02-0000",2,1,"2024-01-01","2023-01-20","2023-01-20"),
+("04-01-02-0000",3,1,"2024-05-01","2024-05-08",null),
+("03-01-02-0000",4,2,"2024-05-03","2024-05-08",null),
+("03-01-02-0000",5,15,"2024-05-03","2024-05-08",null);
+
+TRUNCATE TABLE bookings;
+
+INSERT INTO bookings (SocialSecurityNumber,EquipmentId,Quantity,StartDate,EndDate,ReturnDate)
+VALUES
+("05-01-02-0000",5,3,"2024-05-03","2024-05-08",null);
