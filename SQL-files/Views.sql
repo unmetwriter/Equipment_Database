@@ -41,3 +41,4 @@ DROP VIEW available_items;
 
 
 
+
