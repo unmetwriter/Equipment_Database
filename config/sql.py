@@ -125,15 +125,62 @@ def get_items_by_category(type_id,cursor):
         return err
 def get_bookings():
     pass
-def get_inactive_bookings():
-    pass
-def get_active_bookings():
-    pass
-def get_overdue_bookings():
-    pass
+def get_inactive_bookings(cursor):
+    inactive_bookings_query = "SELECT * FROM bookings_view WHERE EndDate <CURRENT_DATE()"
+    try:
+        cursor.execute(inactive_bookings_query)
+        inactive_bookings = append_booking_query_data(cursor)
+        return inactive_bookings    
+    except mysql.connector.Error as err:
+        cursor.close()
+        return err
+def get_active_bookings(cursor):
+    overdue_bookings_query = "SELECT * FROM active_bookings"
+    overdue_bookings = []
+    try:
+        cursor.execute(overdue_bookings_query)
+        overdue_bookings =append_booking_query_data(cursor)
+        return overdue_bookings
+    except mysql.connector.Error as err:
+        cursor.close()
+        return err
+    
+def get_overdue_bookings(cursor):
+    overdue_bookings_query = "SELECT * FROM bookings_view WHERE ReturnDate IS NULL AND EndDate <CURRENT_DATE()"
+    try:
+        cursor.execute(overdue_bookings_query)
+        overdue_bookings =append_booking_query_data(cursor)
+        return overdue_bookings
+    except mysql.connector.Error as err:
+        cursor.close()
+        return err
+def append_booking_query_data(cursor):
+    bookings_data = []
+    for (booking_id,social_security_number,first_name,last_name,email,phone_number,equipment_id,item,quantity,start_date,end_date,return_date) in cursor:
+            # print("\tItem: "+item,"\tCategory: "+category,"\tDescription: "+description,"\tQuantity: "+str(available_quantity))
+        current_item= {
+            "BookingId":booking_id,
+            "SocialSecurityNumber":social_security_number,
+            "FirstName":first_name,
+            "LastName":last_name,
+            "Email":email,
+            "PhoneNumber":phone_number,
+            "EquipmentId":equipment_id,
+            "Item":item,
+            "Quantity":quantity,
+            "StartDate":start_date,
+            "EndDate":end_date,
+            "ReturnDate":return_date,
+        }
+        bookings_data.append(current_item)
+    cursor.close()
+    return bookings_data
 database=config.connect(config_dict,10,1)
 if (database !=0):
     cursor = database.cursor()
-    # print(get_available_items(cursor))
-    print(get_items_by_category(2,cursor))
+    print(get_overdue_bookings(cursor))
+    cursor = database.cursor()
+    print(get_active_bookings(cursor))
+    cursor = database.cursor()
+    print(get_inactive_bookings(cursor))
 
