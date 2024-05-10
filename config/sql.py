@@ -79,19 +79,61 @@ def add_booking(booking_data):
     cursor.close()
     return 1
     
-def change_equipment(equipment_id):
-    pass
-def change_booking(booking_id):
-    pass
-def remove_equipment(equipment_id):
-    pass
 def remove_request(request_id):
     pass
 def remove_booking(booking_id):
     pass
-
-database=config.connect(config)
+def update_return_date(booking_id,return_date):
+    pass
+def get_available_items(cursor):
+    select_active_bookings= ("SELECT Item,Category,Description,AvailableQuantity FROM available_items")
+    active_items=[]
+    
+    try:
+        cursor.execute(select_active_bookings)
+        for (item,category,description,available_quantity) in cursor:
+            # print("\tItem: "+item,"\tCategory: "+category,"\tDescription: "+description,"\tQuantity: "+str(available_quantity))
+            current_item= {
+                "Item":item,
+                "Category":category,
+                "Description":description,
+                "Available Quantity":available_quantity
+            }
+            active_items.append(current_item)
+        return active_items
+    except mysql.connector.Error as err:
+        cursor.close()
+        return err
+def get_items_by_category(type_id,cursor):
+    category_query= "call items_in_category({id})".format(id=type_id)
+    category_items=[]
+    try:
+        cursor.execute(category_query)
+        for (item,category,description,available_quantity) in cursor:
+            # print("\tItem: "+item,"\tCategory: "+category,"\tDescription: "+description,"\tQuantity: "+str(available_quantity))
+            current_item= {
+                "Item":item,
+                "Category":category,
+                "Description":description,
+                "Available Quantity":available_quantity
+            }
+            category_items.append(current_item)
+        cursor.close()
+        return category_items
+    except mysql.connector.Error as err:
+        cursor.close()
+        return err
+def get_bookings():
+    pass
+def get_inactive_bookings():
+    pass
+def get_active_bookings():
+    pass
+def get_overdue_bookings():
+    pass
+database=config.connect(config_dict,10,1)
 if (database !=0):
     cursor = database.cursor()
-
+    # print(get_available_items(cursor))
+    print(get_items_by_category(2,cursor))
 
