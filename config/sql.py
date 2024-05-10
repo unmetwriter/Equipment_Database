@@ -79,12 +79,39 @@ def add_booking(booking_data):
     cursor.close()
     return 1
     
-def remove_request(request_id):
-    pass
-def remove_booking(booking_id):
-    pass
-def update_return_date(booking_id,return_date):
-    pass
+def remove_request(database,request_id):
+    delete_query = "DELETE FROM bookings WHERE BookingId= {booking_id}".format(request_id=request_id)
+    cursor = database.cursor()
+    try:
+        cursor.execute(delete_query)
+    except mysql.connector.Error as err:
+        cursor.close()
+        return err
+    cursor.close()
+    database.commit
+    return 0
+def remove_booking(database,booking_id):
+    delete_query = "DELETE FROM bookings WHERE BookingId= {booking_id}".format(booking_id=booking_id)
+    cursor = database.cursor()
+    try:
+        cursor.execute(delete_query)
+    except mysql.connector.Error as err:
+        cursor.close()
+        return err
+    cursor.close()
+    database.commit
+    return 0
+def update_return_date(database,booking_id,return_date):
+    cursor = database.cursor()
+    update_booking_return_date = ("UPDATE bookings SET ReturnDate ='{return_date}' WHERE BookingId ={booking_id}".format(return_date=return_date,booking_id=booking_id))
+    try:
+        cursor.execute(update_booking_return_date)
+    except mysql.connector.Error as err:
+        cursor.close()
+        return err
+    cursor.close()
+    database.commit()
+    return 0 
 def get_available_items(cursor):
     select_active_bookings= ("SELECT Item,Category,Description,AvailableQuantity FROM available_items")
     active_items=[]
@@ -178,9 +205,11 @@ def append_booking_query_data(cursor):
 database=config.connect(config_dict,10,1)
 if (database !=0):
     cursor = database.cursor()
-    print(get_overdue_bookings(cursor))
-    cursor = database.cursor()
-    print(get_active_bookings(cursor))
-    cursor = database.cursor()
-    print(get_inactive_bookings(cursor))
+    print(update_return_date(database,booking_id=5,return_date="2024-05-10"))
+    
+    # print(get_overdue_bookings(cursor))
+    # cursor = database.cursor()
+    # print(get_active_bookings(cursor))
+    # cursor = database.cursor()
+    # print(get_inactive_bookings(cursor))
 
