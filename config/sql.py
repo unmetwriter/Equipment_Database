@@ -111,11 +111,10 @@ def update_return_date(database,booking_id,return_date):
         return err
     cursor.close()
     database.commit()
-    return 0 
+    return 0
 def get_available_items(cursor):
     select_active_bookings= ("SELECT Item,Category,Description,AvailableQuantity FROM available_items")
     active_items=[]
-    
     try:
         cursor.execute(select_active_bookings)
         for (item,category,description,available_quantity) in cursor:
@@ -150,8 +149,6 @@ def get_items_by_category(type_id,cursor):
     except mysql.connector.Error as err:
         cursor.close()
         return err
-def get_bookings():
-    pass
 def get_inactive_bookings(cursor):
     inactive_bookings_query = "SELECT * FROM bookings_view WHERE EndDate <CURRENT_DATE()"
     try:
