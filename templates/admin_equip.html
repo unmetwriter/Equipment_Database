@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{%block title%}
+Ericsson Space Equipment Admin Page
+{% endblock%}
+
+{%block head%}
+<div>
+<h1>EQUIPMENT AVAILABLE</h1>
+</div>
+{% endblock%}
+{%block body%}
+<div class = "center">
+        {% for each in Foo %}
+        <div class = "admin-text-equipment">
+            {% for key, value in each.items() %}
+                <div class = "admin-text-equipment-descript">
+                {{ key }} :: {{ value }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    
+</div>
+
+{% endblock%}

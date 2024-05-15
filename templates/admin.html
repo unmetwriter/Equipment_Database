@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{%block title%}
+Ericsson Space Equipment Admin Page
+{% endblock%}
+
+{%block head%}
+<div>
+<h1>ADMIN PAGE</h1>
+</div>
+{% endblock%}
+{%block body%}
+<div class = "center">
+    <div class = "Admin-Button">
+        <a href = "admin_borrowed.hmtl"><p style="text-align:center">Borrowed Equipment</a>
+    </div>
+    <div class = "Admin-Button">
+        <a href = "admin_equip.html"><p style="text-align:center">Available Equipment</a>
+    </div>
+    <div class = "Admin-Button">
+        <a href = "admin_lent_out.html"><p style="text-align:center">Active borrowers</a>
+    </div>
+</div>
+{% endblock%}
