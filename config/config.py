@@ -23,17 +23,17 @@ TABLES['students']= ("CREATE TABLE IF NOT EXISTS students("
 
 TABLES['types']= ("CREATE TABLE IF NOT EXISTS types("
 "TypeId int NOT NULL AUTO_INCREMENT,"
-"Name varchar(50) NOT NULL,"
+"Category varchar(50) NOT NULL,"
 "Description varchar(255) NOT NULL,"
 "PRIMARY KEY (TypeId)"
 ")")
 
 TABLES['equipment']= ("CREATE TABLE IF NOT EXISTS equipment("
 "EquipmentId int AUTO_INCREMENT NOT NULL ,"
-"Name varchar(50) NOT NULL,"
+"Item varchar(50) NOT NULL,"
 "TypeId int NOT NULL,"
 "Description varchar(250) NOT NULL,"
-"TotalNumberItems int NOT NULL,"
+"TotalQuantity int NOT NULL,"
 "PRIMARY KEY (EquipmentId)"
 ")")
 
@@ -41,9 +41,9 @@ TABLES['requests']= ("CREATE TABLE IF NOT EXISTS requests("
 "RequestId int NOT NULL AUTO_INCREMENT,"
 "SocialSecurityNumber varchar(13) NOT NULL,"
 "EquipmentId int NOT NULL,"
-"NumberOfItems int NOT NULL,"
-"StartDate varchar(10) NOT NULL,"
-"EndDate varchar(10) NOT NULL,"
+"Quantity int NOT NULL,"
+"StartDate date NOT NULL,"
+"EndDate date NOT NULL,"
 "PRIMARY KEY (RequestId),"
 "FOREIGN KEY (SocialSecurityNumber) REFERENCES students(SocialSecurityNumber),"
 "FOREIGN KEY (EquipmentId) REFERENCES equipment(EquipmentId)"
@@ -53,21 +53,15 @@ TABLES['bookings']= ("CREATE TABLE IF NOT EXISTS bookings("
 "BookingId int NOT NULL AUTO_INCREMENT,"
 "SocialSecurityNumber varchar(13) NOT NULL,"
 "EquipmentId int NOT NULL,"
-"NumberOfItems int NOT NULL,"
-"StartDate varchar(10) NOT NULL,"
-"EndDate varchar(10) NOT NULL,"
+"Quantity int NOT NULL,"
+"StartDate date NOT NULL,"
+"EndDate date NOT NULL,"
+"ReturnDate date DEFAULT NULL"
 "PRIMARY KEY (BookingId),"
 "FOREIGN KEY (SocialSecurityNumber) REFERENCES students(SocialSecurityNumber),"
 "FOREIGN KEY (EquipmentId) REFERENCES equipment(EquipmentId)"
 ")")
-ALTER_DICT['types']=(
-    "ALTER TABLE types RENAME COLUMN Name to Category")
-ALTER_DICT['equipment']=(
-    "ALTER TABLE equipment RENAME COLUMN Name to Item,RENAME COLUMN TotalNumberItems to TotalQuantity"
-    )
-ALTER_DICT['bookings']= (
-    "ALTER TABLE bookings ADD ReturnDate varchar(10),RENAME COLUMN NumberOfItems to Quantity"
-    )
+
 def set_up_log():
     """Returns a logger which logs messages in the terminal and in a file. Logger is used in the connect() method to log all connection attempts.
     See link for more details: https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html"""
@@ -115,7 +109,6 @@ def connect(config,attempts=10,delay=2):
 
     return None
 
-
 def create_tables(cursor):
     """Creates all tables, provided that it recieves a correct cursor-object for executing sql-code 
     """
@@ -128,22 +121,11 @@ def create_tables(cursor):
                 print(err.msg)
         else:
             print("OK")
-def alter_tables(cursor):
-    for table_name in ALTER_DICT:
-        table_change = ALTER_DICT[table_name]
-        try:
-            print("Altering column {}:".format(table_name),end='')
-            cursor.execute(table_change)
-        except mysql.connector.Error as err:
-                print(err.msg)
-        else:
-            print("Ok")
-    
+        
 if __name__ == "__main__": 
     database=connect(config_dict,10,1)
     if (database !=0):
         cursor = database.cursor()
-    create_tables(cursor)
-    alter_tables(cursor)
-    cursor.close()
-    database.close()
+        create_tables(cursor)
+        cursor.close()
+        database.close()
