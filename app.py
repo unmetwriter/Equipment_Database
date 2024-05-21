@@ -1,8 +1,15 @@
 from flask import Flask, render_template, url_for, request, render_template
 import math
+import config.config
+import config.sql
+import mysql.connector
 from verify import verificationProcess
 app = Flask(__name__)
+def get_database():
+    db =config.config.connect(config.config.config_dict)
+    return db
 
+database = get_database()
 
 @app.route("/")
 def index():
@@ -37,20 +44,27 @@ def go_admin():
     return render_template('admin.html')
 
 @app.route("/admin_borrowed.html")
-def go_admin_borrowed():
-    return render_template('admin_borrowed.html')
+def go_admin_borrowed():    
+    return render_template('admin_borrowed.html', Foo = config.sql.get_booked_items(database))
 
 @app.route("/admin_equip.html")
 def go_admin_equip():
-    return render_template('admin_equip.html', Foo = get_equip_dict())
+    return render_template('admin_equip.html', Foo = config.sql.get_available_items(database))
 
 @app.route("/admin_lent_out.html")
 def go_admin_requests():
-    return render_template('admin_lent_out.html', Foo = get_equip_dict())
+    return render_template('admin_lent_out.html', Foo = config.sql.get_active_bookings(database))
 
 # Retrive list of available things from SQL
 def get_options():
-    return ["VR headset", "Pybrick", "Phone", "hotchip"]
+    items = config.sql.get_available_items(database)
+    if items == mysql.connector.Error:
+        return 404
+    item_names = []
+    for item in items:
+        item_names.append(item["Item"])
+    return item_names
+#["VR headset", "Pybrick", "Phone", "hotchip"]
 
 def verification(booking_request : dict, errors : list) -> list:
     verifier = verificationProcess()
@@ -61,6 +75,7 @@ def verification(booking_request : dict, errors : list) -> list:
 def get_equip_dict():
     ass :dict = {"name":"Pybricks", "ID" : 1, "Short description":"Short desscription","Amount":3}
     ass1 :dict = {"name":"VR", "ID" : 2, "Short description":"Short desscription2","Amount":1}
+
     return [ass1,ass]
 
 def get_number_of_items():
@@ -68,3 +83,4 @@ def get_number_of_items():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
