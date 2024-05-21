@@ -18,8 +18,7 @@ INNER JOIN
 bookings 
 ON students.SocialSecurityNumber =bookings.SocialSecurityNumber
 INNER JOIN 
-equipment 
-ON equipment.EquipmentId =bookings.EquipmentId;
+equipment ON equipment.EquipmentId =bookings.EquipmentId;
 
 SELECT * FROM bookings;
 
