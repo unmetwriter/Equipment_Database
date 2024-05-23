@@ -42,15 +42,9 @@ Ericsson Space Equipment Database
                         {% endfor %}
                     </select>
             </div>            
-          <label>Select an option:</label>
-            <div class = "grid-container">
-                <form action="/submit" method="post">
-                    <select id="dropdown" name="dropdown">
-                        {% for option in options1 %}
-                            <option value="{{ option }}">{{ option }}</option>
-                        {% endfor %}
-                    </select>
-            </div>
+            <label>Quantity</label>
+            <input name = "quantity" type = "text"style = "font-size:30px"></input>
+            
             
             <div class = "button-container">
                 <input type="submit" value="Submit">

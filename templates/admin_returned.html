@@ -13,14 +13,16 @@ Ericsson Space Equipment Admin Page
     <form action="/admin_returned.html" method= "post">
     <label>Select an option:</label>
             <div class = "grid-container">
+                <form action="/submit" method="post">
                     <select id="dropdown" name="dropdown">
-                        {% for option in equip_lent %}
+                        {% for option in options %}
                             <option value="{{ option }}">{{ option }}</option>
                         {% endfor %}
                     </select>
+                    
             </div>   
             <label>Date: </label>
-            <input name = "curr_date" type = "intiger"style = "font-size:30px" style = "width: 80%"></input>
+            <input name = "curr_date" type = "integer"style = "font-size:30px" style = "width: 80%"></input>
             <div class = "button-container">
                 <input type="submit" value="Submit">
             </div>     

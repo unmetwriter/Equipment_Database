@@ -25,7 +25,7 @@ def add_student(student_data,database):
     cursor=database.cursor()
     add_student = ("INSERT INTO students "
                    "(SocialSecurityNumber,FirstName,LastName,Email,PhoneNumber) "
-                   "VALUES (%(social_security_number)s,%(first_name)s,%(last_name)s,%(email)s,%(phone_number)s)")
+                   "VALUES (%(SocialSecurityNumber)s,%(FirstName)s,%(LastName)s,%(Email)s,%(PhoneNumber)s)")
     try:
         cursor.execute(add_student,student_data)
     except mysql.connector.Error as err:
@@ -78,17 +78,17 @@ def add_request(request_data,database):
     
 def add_booking(booking_data,database):
     cursor= database.cursor()
-    add_booking = ("INSERT INTO requests "
-                   "(BookingId,SocialSecurityNumber,EquipmentId,NumberOfItems,StartDate,EndDate) "
-                   "VALUES (%(social_security_number)s,%(equipment_id)s,%(number_of_items)s,%(start_date)s,%(end_date)s)")
+    add_booking = ("INSERT INTO bookings "
+                   "(SocialSecurityNumber,EquipmentId,Quantity,StartDate,EndDate) "
+                   "VALUES (%(SocialSecurityNumber)s,%(EquipmentId)s,%(Quantity)s,%(StartDate)s,%(EndDate)s)")
     try:
-        cursor.execute(add_booking,booking_data)
+        print(cursor.execute(add_booking,booking_data))
     except mysql.connector.Error as err:
         cursor.close()
         return err
     cursor.close()
     database.commit()
-    return 1
+    return 0
     
 def remove_request(database,request_id):
     cursor=database.cursor()
@@ -155,17 +155,18 @@ def get_requests(database):
     return requests
 def get_available_items(database):
     cursor=database.cursor()
-    select_active_bookings= ("SELECT Item,Category,Description,AvailableQuantity FROM available_items")
+    select_active_bookings= ("SELECT EquipmentId,Item,Category,Description,AvailableQuantity FROM available_items")
     active_items=[]
     try:
         cursor.execute(select_active_bookings)
-        for (item,category,description,available_quantity) in cursor:
+        for (equipment_id,item,category,description,available_quantity) in cursor:
             # print("\tItem: "+item,"\tCategory: "+category,"\tDescription: "+description,"\tQuantity: "+str(available_quantity))
             current_item= {
+                "ItemId":equipment_id,
                 "Item":item,
                 "Category":category,
                 "Description":description,
-                "Available Quantity":available_quantity
+                "AvailableQuantity":available_quantity
             }
             active_items.append(current_item)
         return active_items
@@ -271,6 +272,7 @@ if __name__ == "__main__":
     database=config.connect(config_dict,10,1)
     if (database !=0):
         cursor = database.cursor()
+        print(cursor)
         #print(update_return_date(database,booking_id=5,return_date="2024-05-10"))
         
         # print(get_overdue_bookings(cursor))
@@ -278,12 +280,13 @@ if __name__ == "__main__":
         # print(get_active_bookings(cursor))
         # cursor = database.cursor()
         # print(get_inactive_bookings(cursor))
-        request_data = {
-            "social_security_number":"06-01-02-0000",
-            "equipment_id":5,
-            "quantity":3,
-            "start_date":"2024-05-15",
-            "end_date":"2025-01-01"
+        booking_data = {
+            "SocialSecurityNumber":"06-01-02-0000",
+            "EquipmentId":5,
+            "Quantity":3,
+            "StartDate":"2024-05-15",
+            "EndDate":"2025-01-01"
         }
-        print(add_request(request_data,database))
-        print(get_requests(database))
+        
+        print(add_booking(booking_data,database))
+        print(get_active_bookings(database))

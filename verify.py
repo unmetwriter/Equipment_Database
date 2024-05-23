@@ -74,5 +74,5 @@ def verification_algorithm(number : str) -> str:
         if (i % 2 == 1):
             sum = sum + int(number[i])    
     if ((sum + int(number[9]))%10 == 0):   
-        return ""
+        return None
     return str((sum + int(number[9]))%10)
