@@ -267,23 +267,23 @@ def append_booking_query_data(cursor):
         bookings_data.append(current_item)
     cursor.close()
     return bookings_data
-
-database=config.connect(config_dict,10,1)
-if (database !=0):
-    cursor = database.cursor()
-    #print(update_return_date(database,booking_id=5,return_date="2024-05-10"))
-    
-    # print(get_overdue_bookings(cursor))
-    # cursor = database.cursor()
-    # print(get_active_bookings(cursor))
-    # cursor = database.cursor()
-    # print(get_inactive_bookings(cursor))
-    request_data = {
-        "social_security_number":"06-01-02-0000",
-        "equipment_id":5,
-        "quantity":3,
-        "start_date":"2024-05-15",
-        "end_date":"2025-01-01"
-    }
-    print(add_request(request_data,database))
-    print(get_requests(database))
+if __name__ == "__main__": 
+    database=config.connect(config_dict,10,1)
+    if (database !=0):
+        cursor = database.cursor()
+        #print(update_return_date(database,booking_id=5,return_date="2024-05-10"))
+        
+        # print(get_overdue_bookings(cursor))
+        # cursor = database.cursor()
+        # print(get_active_bookings(cursor))
+        # cursor = database.cursor()
+        # print(get_inactive_bookings(cursor))
+        request_data = {
+            "social_security_number":"06-01-02-0000",
+            "equipment_id":5,
+            "quantity":3,
+            "start_date":"2024-05-15",
+            "end_date":"2025-01-01"
+        }
+        print(add_request(request_data,database))
+        print(get_requests(database))

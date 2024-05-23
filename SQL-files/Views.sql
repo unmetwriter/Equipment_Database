@@ -3,13 +3,6 @@ FROM ((students INNER JOIN bookings USING(SocialSecurityNumber))
 INNER JOIN equipment USING (EquipmentId));
 
 
-SELECT equipment.Item,types.Category,equipment.Description, TotalQuantity 
-FROM equipment JOIN types 
-ON equipment.TypeId = types.TypeId;
-
-
-
-
 drop view if exists bookings_view;
 CREATE VIEW bookings_view AS 
 SELECT BookingId,students.*,equipment.EquipmentId,equipment.Item,Quantity,StartDate,EndDate,ReturnDate
