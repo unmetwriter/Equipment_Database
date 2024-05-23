@@ -27,7 +27,6 @@ input {
     border-bottom: 3px solid black;
     padding: 20px;
     text-align: center;
-    font-size: 200px;
 }
 
 form {
@@ -64,7 +63,7 @@ form>.grid-container {
 }
 
 .grid-container {
-    width: 400px;
+    width: 80%;
     margin: 20px;
 }
 
@@ -76,12 +75,14 @@ form>.grid-container {
     font-family: 'Courier New', Courier, monospace;
     padding: 20px;
 }
-
+.admin_btn{
+    color: rgb(201, 103, 4);
+}
 a {
     font-size: 50px;
     grid-column: 2;
     text-decoration: none;
-    color: black;
+    color: rgb(201, 103, 4);
     font-weight: bold;
     -moz-transition: all .2s ease-in;
     -o-transition: all .2s ease-in;
@@ -127,6 +128,7 @@ input[type="submit"] {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 30px;
 }
 
 input[type="submit"]:hover {
@@ -147,7 +149,6 @@ h1 {
     text-align: center;
     color: rgb(201, 103, 4);
     font-size: 50px;
-
 }
 
 h2 {
@@ -158,21 +159,23 @@ h2 {
 .center {
     /* text-align: center; */
     margin: auto;
-    height: 1080px;
+    height: 100%;
     width: 90%;
-
     padding: 10px;
+    padding-bottom: 30px;
     background-color: rgb(41, 68, 125);
 }
 
 .admin-text-equipment{
     font-size: 35px;
     text-align: center;
-    margin: 20px;
+    margin: 10px;
+    padding: 10px;
     color: black;
     font-weight: bold;
     border-top: 6px double black;
     border-bottom: 6px double black;
     border-right: 6px double black;
     border-left: 6px double black;
+    background-color: rgb(41, 68, 125);
 }
