@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{%block title%}
+Ericsson Space Equipment Database Error Page
+{% endblock%}
+
+{%block head%}
+<div>
+<h1> SHIT IS FUCKED BEYOND COMPREHENSION</h1>
+</div>
+{% endblock%}
+{%block body%}
+<div class = "center">
+        {% for each in Foo %}
+        <div class = "admin-text-equipment">
+            {{ each }}
+        </div>
+        {% endfor %}
+    
+</div>
+
+{% endblock%}

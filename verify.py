@@ -11,17 +11,8 @@ class verificationProcess():
     def verify_person_number(self,number : str, errors : list) -> list:
         if(number == ""):
             errors.append("No number given")
-        print(number)
-        if("-" in number):
-            number = number.replace("-","",1)
-            print(number)
-        print(number)
-        if(len(number) == 12):
-            number = number[2:]
-        
         if(number.isdigit() == False):
-            errors.append("Social security number contains non-digits")
-        print(number)    
+            errors.append("Social security number contains non-digits")    
         if(len(number) != 10):
             errors.append("Incorrect length on social security number")
         if(errors == []):
@@ -67,11 +58,11 @@ class verificationProcess():
         return errors
     
 # Help function that checks if a string has numbers in it
-def has_numbers(inputString : str) -> bool:
+def has_numbers(inputString : str = "") -> bool:
     return any(char.isdigit() for char in inputString)
     
 # Algorithm that checks if a social security number is correct
-def verification_algorithm(number : str) -> list:
+def verification_algorithm(number : str) -> str:
     sum : int = 0
     for i in range(9):
         if (i % 2 == 0 or i == 0):    
@@ -83,5 +74,5 @@ def verification_algorithm(number : str) -> list:
         if (i % 2 == 1):
             sum = sum + int(number[i])    
     if ((sum + int(number[9]))%10 == 0):   
-        return 
-    return "Social Security number is invalid"
+        return ""
+    return str((sum + int(number[9]))%10)
