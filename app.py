@@ -90,6 +90,25 @@ def get_return_data():
     config.sql.update_return_date(database,booking_id,return_date)
     return render_template('admin_returned.html', options = config.sql.get_active_bookings(database))
 
+@app.route('/admin_categories.html')
+def go_admin_cats():
+    categories_dict = config.sql.get_categories(database)
+    categories = categories_dict.keys()
+    return(render_template('admin_categories.html', options = categories, foo = []))
+
+@app.route('/admin_categories.html', methods = ['POST'])
+def select_cats():
+    
+    categories_dict = config.sql.get_categories(database)
+    a = request.form["dropdown"]
+    return(render_template('admin_categories.html',options = categories_dict.keys(),foo=config.sql.get_items_by_category(categories_dict[a],database)))
+    # if a == "Saft":
+    #     return(render_template('admin_categories.html', options = ["Saft", "kakor", "Hattar"], foo =["Yoo", "jordgub", "hallon"]))
+    # if a == "kakor":
+    #     return(render_template('admin_categories.html', options = ["Saft", "kakor", "Hattar"],foo =["biskvi", "tårta", "muffin"]))
+    
+    # if a == "Hattar":
+    #     return(render_template('admin_categories.html', options = ["Saft", "kakor", "Hattar"], foo = ["Trilby", "fedora", "tophat"]))
 # Retrive list of available things from SQL
 def get_options():
     items = config.sql.get_available_items(database)
