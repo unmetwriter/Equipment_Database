@@ -1,17 +1,14 @@
 
-
-
 drop view if exists bookings_view;
 CREATE VIEW bookings_view AS 
 SELECT BookingId,students.*,equipment.EquipmentId,equipment.Item,Quantity,StartDate,EndDate,ReturnDate
-FROM students
+FROM studentss
 INNER JOIN 
 bookings 
 ON students.SocialSecurityNumber =bookings.SocialSecurityNumber
 INNER JOIN 
 equipment ON equipment.EquipmentId =bookings.EquipmentId;
 
-SELECT * FROM bookings;
 
 # create a view of currently active bookings
 drop view if exists active_bookings;
