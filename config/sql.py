@@ -196,16 +196,17 @@ def get_booked_items(database):
     cursor.close()
     return booked_items
 def get_categories(database):
-    cursor=database.cursor()
+    
     get_categories_query = "SELECT TypeId,Category FROM types"
     try:
+        cursor=database.cursor()
         cursor.execute(get_categories_query)
         categories=[]
         for(type_id,category) in cursor:
             current_category = {
-                category:type_id
+                type_id:category
             }
-            categories.append(category)
+            categories.append(current_category)
     except mysql.connector.Error as err:
         cursor.close()
         return err

@@ -16,8 +16,7 @@ database = get_database()
 @app.route("/")
 def index():
     dropdown_options = get_options()
-    number_of_items = get_number_of_items()
-    return render_template('index.html',options=dropdown_options, options1 = number_of_items)
+    return render_template('index.html',options=dropdown_options)
 
 @app.route("/", methods=["POST"])
 def input():
@@ -47,13 +46,13 @@ def input():
         subset_student_dict= {k:booking[k] for k in keys_to_include_student}
         print(config.sql.add_student(subset_student_dict,database))
         print(config.sql.add_booking(subset_dict,database))
-        return render_template("index.html", options=dropdown_options,options1 = get_number_of_items())
+        return render_template("index.html", options=dropdown_options)
     else:
         return "Shits fucked"
 
 @app.route('/', methods=['GET'])
 def dropdown():
-    return render_template('index.html', options=dropdown_options)
+    return render_template('index.html', options=get_options())
 
 @app.route("/admin.html")
 def go_admin():
@@ -69,11 +68,10 @@ def go_admin_equip():
 
 @app.route("/admin_lent_out.html")
 def go_admin_requests():
-    return render_template('admin_lent_out.html', options = config.sql.get_active_bookings(database))
+    return render_template('admin_lent_out.html', Foo = config.sql.get_active_bookings(database))
 
 @app.route('/admin_returned.html')
 def go_admin_returned():
-    
     return render_template('admin_returned.html', options = config.sql.get_active_bookings(database))
 
 @app.route('/admin_returned.html', methods = ['POST'])
@@ -92,16 +90,18 @@ def get_return_data():
 
 @app.route('/admin_categories.html')
 def go_admin_cats():
-    categories_dict = config.sql.get_categories(database)
-    categories = categories_dict.keys()
-    return(render_template('admin_categories.html', options = categories, foo = []))
+    db = get_database()
+    categories_list = config.sql.get_categories(db)
+    return(render_template('admin_categories.html', options = categories_list, foo = get_options()))
 
 @app.route('/admin_categories.html', methods = ['POST'])
 def select_cats():
-    
-    categories_dict = config.sql.get_categories(database)
+    db = get_database()
+    categories_list = config.sql.get_categories(database)
+  
     a = request.form["dropdown"]
-    return(render_template('admin_categories.html',options = categories_dict.keys(),foo=config.sql.get_items_by_category(categories_dict[a],database)))
+    print(a)
+    return(render_template('admin_categories.html',options =categories_list ,foo=config.sql.get_items_by_category(int(a[1]),db)))
     # if a == "Saft":
     #     return(render_template('admin_categories.html', options = ["Saft", "kakor", "Hattar"], foo =["Yoo", "jordgub", "hallon"]))
     # if a == "kakor":
@@ -120,7 +120,7 @@ def get_options():
         item_names.append((item["ItemId"],item["Item"],item["AvailableQuantity"]))
 
     return item_names
-#["VR headset", "Pybrick", "Phone", "hotchip"]
+
 
 def verification(booking_request : dict, errors : list) -> list:
     verifier = verificationProcess()
