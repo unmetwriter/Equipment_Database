@@ -2,7 +2,7 @@
 drop view if exists bookings_view;
 CREATE VIEW bookings_view AS 
 SELECT BookingId,students.*,equipment.EquipmentId,equipment.Item,Quantity,StartDate,EndDate,ReturnDate
-FROM studentss
+FROM students
 INNER JOIN 
 bookings 
 ON students.SocialSecurityNumber =bookings.SocialSecurityNumber

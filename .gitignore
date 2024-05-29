@@ -3,3 +3,5 @@
 **log/
 #ignore the template html-files
 **templates/
+
+**venv/
