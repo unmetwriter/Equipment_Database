@@ -2,6 +2,6 @@
 #ignore the logs made when trying to connect to database
 **log/
 #ignore the template html-files
-**templates/
+
 
 **venv/
